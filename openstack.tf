@@ -42,19 +42,24 @@ resource "openstack_networking_port_v2" "openstack-internal-network-2-port" {
   name           = "${var.project-prefix}-${each.key}-internal-network-2-port"
   network_id     = openstack_networking_network_v2.internal-network-2.id
   admin_state_up = "true"
-  allowed_address_pairs {
-    ip_address = "10.233.0.0/18"
-  }
-  allowed_address_pairs {
-    ip_address = "10.133.0.0/18"
-  }
+  #allowed_address_pairs {
+  #  ip_address = "10.233.0.0/18"
+  #}
+  #allowed_address_pairs {
+  #  ip_address = "10.133.0.0/18"
+  #}
+  #allowed_address_pairs {
+  #  ip_address = "0.0.0.0/0"
+  #}
   fixed_ip {
     subnet_id  = openstack_networking_subnet_v2.internal-network-subnet-2.id
     ip_address = "${var.internal-network-2-network-addr}.${each.value}"
   }
-  security_group_ids = [
-    openstack_networking_secgroup_v2.internal-network-secgroup.id
-  ]
+  #security_group_ids = [
+  #  openstack_networking_secgroup_v2.internal-network-secgroup.id
+  #]
+  no_security_groups = "true" 
+  port_security_enabled = "false" 
   depends_on = [
     openstack_networking_subnet_v2.internal-network-subnet-2
   ]
@@ -65,13 +70,21 @@ resource "openstack_networking_port_v2" "openstack-internal-network-3-port" {
   name           = "${var.project-prefix}-${each.key}-internal-network-3-port"
   network_id     = openstack_networking_network_v2.internal-network-3.id
   admin_state_up = "true"
+  #allowed_address_pairs {
+  #  ip_address = "10.113.1.0/24"
+  #}
+  #allowed_address_pairs {
+  #  ip_address = "0.0.0.0/0"
+  #}
   fixed_ip {
     subnet_id  = openstack_networking_subnet_v2.internal-network-subnet-3.id
     ip_address = "${var.internal-network-3-network-addr}.${each.value}"
   }
-  security_group_ids = [
-    openstack_networking_secgroup_v2.internal-network-secgroup.id
-  ]
+  #security_group_ids = [
+  #  openstack_networking_secgroup_v2.internal-network-secgroup.id
+  #]
+  no_security_groups = "true"
+  port_security_enabled = "false"
   depends_on = [
     openstack_networking_subnet_v2.internal-network-subnet-3
   ]
@@ -82,6 +95,9 @@ resource "openstack_networking_port_v2" "openstack-external-network-1-port" {
   name           = "${var.project-prefix}-${each.key}-external-network-1-port"
   network_id     = openstack_networking_network_v2.external-network-1.id
   admin_state_up = "true"
+  allowed_address_pairs {
+    ip_address = "172.21.1.0/24"
+  }
   fixed_ip {
     subnet_id  = openstack_networking_subnet_v2.external-network-subnet-1.id
     ip_address = "${var.external-network-1-network-addr}.${each.value}"
